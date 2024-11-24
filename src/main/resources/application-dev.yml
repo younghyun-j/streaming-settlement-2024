@@ -1,0 +1,32 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: ${MYSQL_DB_URL}
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database: MYSQL
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    defer-datasource-initialization: true
+
+  data:
+    redis:
+      host: redis
+      port: ${REDIS_SERVER_PORT}
+
+logging:
+  level:
+    org.springframework.cache: trace
+    org.hibernate.orm.jdbc.bind: trace

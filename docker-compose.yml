@@ -1,0 +1,25 @@
+services:
+  mysql:
+    image: mysql
+    env_file:
+      - .env
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      TZ: Asia/Seoul
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    ports:
+      - "${MYSQL_SERVER_PORT}:${MYSQL_SERVER_PORT}"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping"]
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis/redis-stack
+    restart: always
+    ports:
+      - "${REDIS_SERVER_PORT}:${REDIS_SERVER_PORT}"
