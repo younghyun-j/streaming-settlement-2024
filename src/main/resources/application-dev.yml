@@ -23,10 +23,11 @@ spring:
 
   data:
     redis:
-      host: redis
+      host: ${REDIS_SERVER_HOST}
       port: ${REDIS_SERVER_PORT}
 
 logging:
   level:
+    org.springframework.batch: DEBUG
     org.springframework.cache: trace
     org.hibernate.orm.jdbc.bind: trace

@@ -1,7 +1,16 @@
-spring:
-  profiles:
-    active: dev
-
 server:
   port: ${STREAMING_SETTLEMENT_SERVER_PORT}
   forward-headers-strategy: native
+
+spring:
+  profiles:
+    active: dev
+  batch:
+    #    job:
+    #      name: ${job.name:NONE}
+    jdbc:
+      initialize-schema: always
+    chunk:
+      size: 1000
+    pool:
+      size: 4
