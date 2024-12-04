@@ -1,4 +1,4 @@
-package com.streaming.settlement.streamingsettlement.settlement.repository;
+package com.streaming.settlement.streamingsettlement.statistics.repository;
 
 import com.streaming.settlement.streamingsettlement.statistics.entity.DailyContentStatistics;
 import org.springframework.data.jpa.repository.JpaRepository;
