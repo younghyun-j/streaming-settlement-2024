@@ -21,7 +21,7 @@ public class DailyContentStatisticsCustomRepositoryImpl implements DailyContentS
     public void bulkInsertDailyStatistic(List<DailyContentStatistics> dailyStatistics) {
 
         String sql = """
-                INSERT daily_content_statistics(content_id, content_views, ad_views, playback_time, total_content_views, total_ad_views, total_playback_time, watched_date)
+                INSERT daily_content_statistics(content_id, content_views, ad_views, total_content_views, total_ad_views, total_playback_time, watched_date)
                 VALUES (:contentId, :contentViews, :adViews, :playbackTime, :totalContentViews, :totalAdViews, :totalPlaybackTime, :watchedDate)
                 """;
         namedParameterJdbcTemplate.batchUpdate(sql, getInsertDailyContentStatisticToSqlParameterSources(dailyStatistics));
@@ -38,7 +38,6 @@ public class DailyContentStatisticsCustomRepositoryImpl implements DailyContentS
                 .addValue("contentId", dailyContentStatistics.getContentId())
                 .addValue("contentViews", dailyContentStatistics.getTotalContentViews())
                 .addValue("adViews", dailyContentStatistics.getAdViews())
-                .addValue("playbackTime", dailyContentStatistics.getPlaybackTime())
                 .addValue("totalContentViews", dailyContentStatistics.getContentViews())
                 .addValue("totalAdViews", dailyContentStatistics.getTotalAdViews())
                 .addValue("totalPlaybackTime", dailyContentStatistics.getTotalPlaybackTime())

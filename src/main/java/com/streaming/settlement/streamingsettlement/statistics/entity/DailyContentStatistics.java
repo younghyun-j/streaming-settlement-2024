@@ -1,7 +1,8 @@
 package com.streaming.settlement.streamingsettlement.statistics.entity;
 
+import com.streaming.settlement.streamingsettlement.global.batch.dto.UserAdWatchHistoryDto;
+import com.streaming.settlement.streamingsettlement.global.batch.dto.UserContentWatchHistoryDto;
 import com.streaming.settlement.streamingsettlement.streaming.entity.UserAdWatchHistory;
-import com.streaming.settlement.streamingsettlement.streaming.entity.UserContentWatchHistory;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -30,9 +31,6 @@ public class DailyContentStatistics {
     private Long adViews;
 
     @Column(nullable = false)
-    private Long playbackTime;
-
-    @Column(nullable = false)
     private Long totalContentViews;
 
     @Column(nullable = false)
@@ -50,7 +48,6 @@ public class DailyContentStatistics {
     public DailyContentStatistics(Long contentId,
                                   Long contentViews,
                                   Long adViews,
-                                  Long playbackTime,
                                   Long totalContentViews,
                                   Long totalAdViews,
                                   Long totalPlaybackTime,
@@ -58,7 +55,6 @@ public class DailyContentStatistics {
         this.contentId = contentId;
         this.contentViews = contentViews;
         this.adViews = adViews;
-        this.playbackTime = playbackTime;
         this.totalContentViews = totalContentViews;
         this.totalAdViews = totalAdViews;
         this.totalPlaybackTime = totalPlaybackTime;
@@ -66,16 +62,15 @@ public class DailyContentStatistics {
         this.createdAt = LocalDateTime.now();
     }
 
-    public void updateContentStatistics(List<UserContentWatchHistory> contentWatchHistories) {
+    public void updateContentStatistics(List<UserContentWatchHistoryDto> contentWatchHistories) {
         contentViews += contentWatchHistories.size();
         totalContentViews += contentWatchHistories.size();
         contentWatchHistories.forEach(history -> {
-            playbackTime += history.getTotalPlaybackTime();
-            totalPlaybackTime += history.getTotalPlaybackTime();
+            totalPlaybackTime += history.totalPlaybackTime();
         });
     }
 
-    public void updateAdStatistics(List<UserAdWatchHistory> adWatchHistories) {
+    public void updateAdStatistics(List<UserAdWatchHistoryDto> adWatchHistories) {
         adViews += adWatchHistories.size();
         totalAdViews += adWatchHistories.size();
     }

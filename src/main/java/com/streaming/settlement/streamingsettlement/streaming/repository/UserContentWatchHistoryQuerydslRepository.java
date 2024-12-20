@@ -2,7 +2,8 @@ package com.streaming.settlement.streamingsettlement.streaming.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.streaming.settlement.streamingsettlement.streaming.entity.UserContentWatchHistory;
+import com.streaming.settlement.streamingsettlement.global.batch.dto.QUserContentWatchHistoryDto;
+import com.streaming.settlement.streamingsettlement.global.batch.dto.UserContentWatchHistoryDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import static com.streaming.settlement.streamingsettlement.streaming.entity.QUserContentWatchHistory.userContentWatchHistory;
 
+
 @Slf4j
 @Repository
 @RequiredArgsConstructor
@@ -19,9 +21,18 @@ public class UserContentWatchHistoryQuerydslRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public List<UserContentWatchHistory> findWatchHistoriesByContentId(Long contentId, Long cursorId, LocalDate date, Long fetchSize) {
+    public List<UserContentWatchHistoryDto> findWatchHistoriesByContentId(Long contentId, Long cursorId, LocalDate date, Long fetchSize) {
         return jpaQueryFactory
-                .select(userContentWatchHistory)
+                .select(
+                        new QUserContentWatchHistoryDto(
+                            userContentWatchHistory.id,
+                            userContentWatchHistory.userId,
+                            userContentWatchHistory.contentId,
+                            userContentWatchHistory.lastPlaybackPosition,
+                            userContentWatchHistory.totalPlaybackTime,
+                            userContentWatchHistory.watchedDate
+                        )
+                )
                 .from(userContentWatchHistory)
                 .where(
                         userContentWatchHistory.contentId.eq(contentId),

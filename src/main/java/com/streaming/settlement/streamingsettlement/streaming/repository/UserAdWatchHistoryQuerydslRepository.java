@@ -2,7 +2,8 @@ package com.streaming.settlement.streamingsettlement.streaming.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.streaming.settlement.streamingsettlement.streaming.entity.UserAdWatchHistory;
+import com.streaming.settlement.streamingsettlement.global.batch.dto.QUserAdWatchHistoryDto;
+import com.streaming.settlement.streamingsettlement.global.batch.dto.UserAdWatchHistoryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -17,9 +18,17 @@ public class UserAdWatchHistoryQuerydslRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public List<UserAdWatchHistory> findUserAdWatchHistoriesByCondition(Long contentId, Long cursorId, LocalDate date, Long fetchSize) {
+    public List<UserAdWatchHistoryDto> findUserAdWatchHistoriesByCondition(Long contentId, Long cursorId, LocalDate date, Long fetchSize) {
         return jpaQueryFactory
-                .select(userAdWatchHistory)
+                .select(
+                        new QUserAdWatchHistoryDto(
+                                userAdWatchHistory.id,
+                                userAdWatchHistory.userId,
+                                userAdWatchHistory.contentId,
+                                userAdWatchHistory.adId,
+                                userAdWatchHistory.watchedDate
+                        )
+                )
                 .from(userAdWatchHistory)
                 .where(
                         userAdWatchHistory.contentId.eq(contentId),
